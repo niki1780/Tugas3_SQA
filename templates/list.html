@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Target - FintechGo!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Daftar Target Tabungan</h1>
+        
+        {% if targets %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Target</th>
+                        <th>Kategori</th>
+                        <th>Nominal Target</th>
+                        <th>Jangka Waktu</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Status</th>
+                        <th>Asuransi</th>
+                        <th>Total Komitmen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in targets %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ t.nama }}</td>
+                        <td>{{ t.kategori }}</td>
+                        <td>Rp {{ "{:,}".format(t.nominal) }}</td>
+                        <td>{{ t.jangka_waktu }} bulan</td>
+                        <td>{{ t.tanggal_mulai }}</td>
+                        <td>
+                            {% if t.status == 'Premium' %}
+                                <span class="badge premium">🌟 {{ t.status }}</span>
+                            {% else %}
+                                <span class="badge reguler">👤 {{ t.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if t.asuransi %}
+                                <span class="badge asuransi">✅ Ya</span>
+                            {% else %}
+                                <span class="badge no-asuransi">❌ Tidak</span>
+                            {% endif %}
+                        </td>
+                        <td><strong>Rp {{ "{:,}".format(t.total) }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" style="text-align: right"><strong>Total Target:</strong></td>
+                        <td><strong>Rp {{ "{:,}".format(targets|sum(attribute='total')) }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <div class="summary">
+                <p>Total Target: <strong>{{ targets|length }}</strong> target</p>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>📭 Belum ada target yang dibuat.</p>
+                <p>Yuk, buat target tabungan pertamamu!</p>
+            </div>
+        {% endif %}
+        
+        <br>
+        <div class="actions">
+            <a href="{{ url_for('index') }}" class="button">➕ Buat Target Baru</a>
+        </div>
+    </div>
+</body>
+</html>

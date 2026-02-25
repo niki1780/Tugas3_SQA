@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Target - FintechGo!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Target Berhasil Dibuat! 🎉</h1>
+        
+        <div class="result-box">
+            <p><strong>Nama Target:</strong> {{ target.nama }}</p>
+            <p><strong>Kategori:</strong> {{ target.kategori }}</p>
+            <p><strong>Target Nominal:</strong> Rp {{ "{:,}".format(target.nominal) }}</p>
+            <p><strong>Jangka Waktu:</strong> {{ target.jangka_waktu }} bulan</p>
+            <p><strong>Tanggal Mulai:</strong> {{ target.tanggal_mulai }}</p>
+            <p><strong>Setoran Bulanan:</strong> Rp {{ "{:,}".format(target.setoran) }} (pembulatan ke bawah)</p>
+            
+            {% if target.diskon > 0 %}
+                <p><strong>Diskon Premium:</strong> Rp {{ "{:,}".format(target.diskon) }}</p>
+            {% endif %}
+            
+            {% if target.biaya_asuransi > 0 %}
+                <p><strong>Biaya Asuransi:</strong> Rp {{ "{:,}".format(target.biaya_asuransi) }}</p>
+            {% endif %}
+            
+            <hr>
+            <p><strong>Total Komitmen:</strong> Rp {{ "{:,}".format(target.total) }}</p>
+        </div>
+        
+        <p class="success-message">✨ Selamat! Target <strong>{{ target.nama }}</strong> berhasil dibuat.</p>
+        
+        <br>
+        <div class="actions">
+            <a href="{{ url_for('index') }}" class="button">Buat Target Lagi</a>
+            <a href="{{ url_for('list_targets') }}" class="button">Lihat Semua Target</a>
+        </div>
+    </div>
+</body>
+</html>

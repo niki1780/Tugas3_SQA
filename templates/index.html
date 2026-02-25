@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FintechGo! Tabungan Impian</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Buat Target Tabungan Impian</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form action="{{ url_for('create') }}" method="post">
+            <div class="form-group">
+                <label for="nama">Nama Target:</label>
+                <input type="text" id="nama" name="nama" required maxlength="50" pattern="[a-zA-Z0-9\s]+" title="Hanya huruf, angka, dan spasi">
+                <small>Maksimal 50 karakter, hanya huruf, angka, dan spasi</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="kategori">Kategori Target:</label>
+                <select id="kategori" name="kategori" required>
+                    <option value="">Pilih Kategori</option>
+                    <option value="Gadget">Gadget</option>
+                    <option value="Liburan">Liburan</option>
+                    <option value="Dana Darurat">Dana Darurat</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="nominal">Target Nominal (Rp):</label>
+                <input type="number" id="nominal" name="nominal" min="100000" max="100000000" step="1" required>
+                <small>Min Rp 100.000, Max Rp 100.000.000</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="jangka_waktu">Jangka Waktu (bulan):</label>
+                <select id="jangka_waktu" name="jangka_waktu" required>
+                    <option value="">Pilih</option>
+                    <option value="3">3 bulan</option>
+                    <option value="6">6 bulan</option>
+                    <option value="12">12 bulan</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tanggal_mulai">Tanggal Mulai:</label>
+                <input type="date" id="tanggal_mulai" name="tanggal_mulai" required>
+                <small>Antara hari ini dan 1 tahun ke depan</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="status">Status Pengguna:</label>
+                <select id="status" name="status">
+                    <option value="Reguler">Reguler</option>
+                    <option value="Premium">Premium</option>
+                </select>
+            </div>
+            
+            <div class="form-group checkbox">
+                <label>
+                    <input type="checkbox" name="asuransi"> Lindungi Target dengan Asuransi (biaya tambahan 5%)
+                </label>
+            </div>
+            
+            <button type="submit">Buat Target</button>
+        </form>
+        
+        <br>
+        <a href="{{ url_for('list_targets') }}">Lihat Daftar Target</a>
+    </div>
+    
+    <script>
+        // Set min dan max tanggal secara otomatis menggunakan JavaScript
+        const today = new Date().toISOString().split('T')[0];
+        const nextYear = new Date();
+        nextYear.setFullYear(nextYear.getFullYear() + 1);
+        const maxDate = nextYear.toISOString().split('T')[0];
+        
+        document.getElementById('tanggal_mulai').setAttribute('min', today);
+        document.getElementById('tanggal_mulai').setAttribute('max', maxDate);
+    </script>
+</body>
+</html>
